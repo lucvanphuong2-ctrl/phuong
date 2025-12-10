@@ -1,0 +1,404 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Brain, 
+  AlertTriangle, 
+  CheckCircle, 
+  GraduationCap, 
+  ShieldAlert, 
+  Lightbulb, 
+  Users, 
+  ArrowRight,
+  Menu,
+  X,
+  RefreshCw
+} from 'lucide-react';
+
+// Main Application Component
+export default function App() {
+  const [activeSection, setActiveSection] = useState('home');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveSection(id);
+      setIsMenuOpen(false);
+    }
+  };
+
+  // Navigation Items
+  const navItems = [
+    { id: 'benefits', label: 'Lợi Ích' },
+    { id: 'risks', label: 'Tác Hại' },
+    { id: 'students', label: 'Dành Cho HSSV' },
+    { id: 'quiz', label: 'Tự Đánh Giá' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
+              <img src="https://i.postimg.cc/nMXdKWZg/DALL-E-2025-03-05-23-44-12-A-modern-and-sleek-logo-for-a-website-about-AI-misuse-awareness-Design.webp" alt="AI Awareness Logo" className="h-10 w-10 rounded-full" />
+              <span className="font-bold text-xl tracking-tight text-slate-900">AI & Cuộc Sống</span>
+            </div>
+            
+            {/* Desktop Menu */}
+            <div className="hidden md:flex space-x-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-slate-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-slate-600 hover:text-slate-900 p-2"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white border-t">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-50"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="pt-24 pb-12 md:pt-32 md:pb-24 px-4 bg-gradient-to-br from-indigo-50 via-white to-blue-50">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-6">
+            <Lightbulb size={16} className="mr-2" />
+            Trí tuệ nhân tạo: Công cụ hay Ông chủ?
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
+            Hiểu đúng để dùng đúng <br/>
+            <span className="text-indigo-600">Trí Tuệ Nhân Tạo (AI)</span>
+          </h1>
+          <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-600">
+            AI đang thay đổi cách chúng ta học tập và làm việc. Nhưng ranh giới giữa "hỗ trợ" và "lệ thuộc" rất mong manh. Hãy cùng khám phá.
+          </p>
+          <div className="mt-10 flex justify-center gap-4">
+            <button 
+              onClick={() => scrollToSection('benefits')}
+              className="px-8 py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow-lg hover:bg-indigo-700 transition-all transform hover:-translate-y-1"
+            >
+              Khám phá ngay
+            </button>
+            <button 
+              onClick={() => scrollToSection('quiz')}
+              className="px-8 py-3 rounded-lg bg-white text-indigo-600 font-semibold border border-indigo-200 shadow-sm hover:bg-indigo-50 transition-all"
+            >
+              Làm bài test
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section id="benefits" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">Điểm Lợi Của AI</h2>
+            <p className="mt-4 text-lg text-slate-600">Khi được sử dụng đúng cách, AI là một trợ lý đắc lực.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard 
+              icon={<Brain className="h-8 w-8 text-green-500" />}
+              title="Tăng Năng Suất"
+              description="AI giúp xử lý các tác vụ lặp đi lặp lại, tóm tắt văn bản dài và tìm kiếm thông tin nhanh chóng, giúp bạn tiết kiệm hàng giờ đồng hồ."
+              color="bg-green-50"
+            />
+            <FeatureCard 
+              icon={<Lightbulb className="h-8 w-8 text-blue-500" />}
+              title="Khơi Nguồn Ý Tưởng"
+              description="Bí ý tưởng? AI có thể gợi ý dàn bài, chủ đề, hoặc các góc nhìn mới mẻ để bạn bắt đầu bài luận hoặc dự án sáng tạo."
+              color="bg-blue-50"
+            />
+            <FeatureCard 
+              icon={<GraduationCap className="h-8 w-8 text-purple-500" />}
+              title="Gia Sư Cá Nhân"
+              description="Giải thích các khái niệm phức tạp theo cách đơn giản, tạo bài tập thực hành và lộ trình học tập riêng biệt cho từng cá nhân."
+              color="bg-purple-50"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Risks Section */}
+      <section id="risks" className="py-16 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-red-600 font-bold tracking-wider uppercase text-sm">Cảnh báo</span>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900 sm:text-4xl">Mặt Trái Của Việc Lạm Dụng</h2>
+            <p className="mt-4 text-lg text-slate-600">Những nguy cơ tiềm ẩn khi chúng ta giao phó trí não cho máy móc.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            <RiskCard 
+              title="Mất Tư Duy Phản Biện"
+              content="Khi quen với việc nhận câu trả lời ngay lập tức, não bộ lười suy nghĩ, phân tích và đánh giá vấn đề. Chúng ta dần trở thành những 'người tiêu thụ thông tin' thụ động thay vì người kiến tạo."
+            />
+            <RiskCard 
+              title="Ảo Tưởng Kiến Thức"
+              content="Sử dụng AI để làm bài tập tạo ra cảm giác 'mình đã biết', nhưng thực chất kiến thức không đọng lại trong đầu. Khi đối mặt với bài thi thực tế không có AI, kết quả sẽ sụt giảm nghiêm trọng."
+            />
+            <RiskCard 
+              title="Đạo Văn & Liêm Chính"
+              content="Sao chép nguyên văn từ AI mà không trích dẫn hoặc kiểm chứng là vi phạm đạo đức học thuật. Các trường học ngày càng có nhiều công cụ để phát hiện văn bản do AI tạo ra."
+            />
+            <RiskCard 
+              title="Thông Tin Sai Lệch (Hallucination)"
+              content="AI có thể 'bịa' ra thông tin, số liệu, hoặc sự kiện lịch sử một cách rất thuyết phục. Tin tưởng tuyệt đối vào AI mà không kiểm chứng (fact-check) là cực kỳ nguy hiểm."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Student Guide Section */}
+      <section id="students" className="py-16 bg-indigo-900 text-white relative overflow-hidden">
+        {/* Decorative circles */}
+        <div className="absolute top-0 left-0 -ml-20 -mt-20 w-64 h-64 rounded-full bg-indigo-800 opacity-50"></div>
+        <div className="absolute bottom-0 right-0 -mr-20 -mb-20 w-80 h-80 rounded-full bg-indigo-700 opacity-50"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="md:flex md:items-center md:justify-between mb-12">
+            <div className="md:w-1/2">
+              <h2 className="text-3xl font-bold sm:text-4xl mb-4">Lời Khuyên Cho HSSV</h2>
+              <p className="text-indigo-200 text-lg">
+                Sử dụng AI thông minh để bứt phá, đừng để nó biến bạn thành nô lệ công nghệ.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <GuideStep 
+              number="01"
+              title="Quy tắc 80/20"
+              text="Hãy tự làm 80% công việc (lên ý tưởng, viết nháp, tư duy cốt lõi). Chỉ dùng AI cho 20% còn lại (kiểm tra lỗi ngữ pháp, gợi ý từ vựng, định dạng)."
+            />
+            <GuideStep 
+              number="02"
+              title="AI là Copilot, không phải Pilot"
+              text="Bạn là cơ trưởng (người ra quyết định), AI chỉ là cơ phó (hỗ trợ). Đừng bao giờ copy-paste nguyên văn câu trả lời của AI vào bài làm."
+            />
+            <GuideStep 
+              number="03"
+              title="Luôn Fact-Check"
+              text="Mọi thông tin AI đưa ra cần được đối chiếu với giáo trình hoặc nguồn chính thống. AI không chịu trách nhiệm cho điểm số của bạn, nhưng bạn thì có."
+            />
+          </div>
+
+          <div className="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+            <h3 className="text-xl font-bold flex items-center gap-2 mb-3">
+              <ShieldAlert className="text-yellow-400" />
+              Lưu ý đặc biệt khi làm bài luận
+            </h3>
+            <p className="text-indigo-100">
+              Nếu bạn dùng AI để tham khảo ý tưởng, hãy viết lại bằng văn phong của chính mình. Sự độc đáo và dấu ấn cá nhân là điều mà AI hiện tại chưa thể sao chép hoàn hảo được. Thầy cô coi trọng quá trình tư duy hơn là một kết quả hoàn hảo nhưng vô hồn.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Quiz Section */}
+      <section id="quiz" className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-slate-900">Bạn có đang bị phụ thuộc vào AI?</h2>
+            <p className="text-slate-600 mt-2">Trả lời 3 câu hỏi nhanh để kiểm tra thói quen của bạn.</p>
+          </div>
+          
+          <SimpleQuiz />
+          
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="flex justify-center items-center gap-2 mb-4 text-white">
+            <img src="https://i.postimg.cc/nMXdKWZg/DALL-E-2025-03-05-23-44-12-A-modern-and-sleek-logo-for-a-website-about-AI-misuse-awareness-Design.webp" alt="AI Awareness Logo" className="h-8 w-8 rounded-full" />
+            <span className="text-xl font-bold">AI Awareness Project</span>
+          </div>
+          <p className="mb-4">Dự án nâng cao nhận thức về việc sử dụng AI có trách nhiệm trong giáo dục.</p>
+          <p className="text-sm text-slate-500">
+            &copy; {new Date().getFullYear()} Lục Văn Phương
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// --- Sub-components ---
+
+function FeatureCard({ icon, title, description, color }) {
+  return (
+    <div className={`p-8 rounded-2xl ${color} border border-slate-100 transition-all hover:shadow-lg hover:-translate-y-1`}>
+      <div className="bg-white p-3 rounded-xl shadow-sm inline-block mb-4">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
+      <p className="text-slate-600 leading-relaxed">{description}</p>
+    </div>
+  );
+}
+
+function RiskCard({ title, content }) {
+  return (
+    <div className="flex gap-4">
+      <div className="flex-shrink-0 mt-1">
+        <AlertTriangle className="h-6 w-6 text-red-500" />
+      </div>
+      <div>
+        <h3 className="text-lg font-bold text-slate-900 mb-2">{title}</h3>
+        <p className="text-slate-600 leading-relaxed">{content}</p>
+      </div>
+    </div>
+  );
+}
+
+function GuideStep({ number, title, text }) {
+  return (
+    <div className="bg-indigo-800/50 p-6 rounded-xl border border-indigo-700/50 hover:bg-indigo-800 transition-colors">
+      <span className="text-4xl font-black text-indigo-500/30 mb-4 block">{number}</span>
+      <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+      <p className="text-indigo-200">{text}</p>
+    </div>
+  );
+}
+
+function SimpleQuiz() {
+  const [score, setScore] = useState(0);
+  const [currentQ, setCurrentQ] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+
+  const questions = [
+    {
+      text: "Khi giáo viên giao bài tập về nhà, điều đầu tiên bạn làm là gì?",
+      options: [
+        { text: "Mở ChatGPT/AI lên và copy đề bài vào ngay lập tức.", score: 3 },
+        { text: "Tự suy nghĩ dàn ý trước, chỉ dùng AI khi bí ý tưởng.", score: 1 },
+        { text: "Làm hoàn toàn bằng sức mình, tra cứu sách vở.", score: 0 }
+      ]
+    },
+    {
+      text: "Bạn có thường kiểm tra lại (fact-check) thông tin mà AI cung cấp không?",
+      options: [
+        { text: "Hiếm khi, tôi thấy nó viết khá chuẩn.", score: 3 },
+        { text: "Thỉnh thoảng, với những thông tin quan trọng.", score: 1 },
+        { text: "Luôn luôn đối chiếu với nguồn khác.", score: 0 }
+      ]
+    },
+    {
+      text: "Nếu ngày mai AI biến mất, bạn có tự tin hoàn thành tốt các bài tập không?",
+      options: [
+        { text: "Khó đấy, tôi quen dùng nó rồi.", score: 3 },
+        { text: "Sẽ chậm hơn chút, nhưng vẫn làm tốt.", score: 0 },
+      ]
+    }
+  ];
+
+  const handleAnswer = (points) => {
+    const newScore = score + points;
+    if (currentQ < questions.length - 1) {
+      setScore(newScore);
+      setCurrentQ(currentQ + 1);
+    } else {
+      setScore(newScore);
+      setShowResult(true);
+    }
+  };
+
+  const resetQuiz = () => {
+    setScore(0);
+    setCurrentQ(0);
+    setShowResult(false);
+  };
+
+  if (showResult) {
+    let resultTitle = "";
+    let resultMsg = "";
+    let colorClass = "";
+
+    if (score <= 2) {
+      resultTitle = "Người dùng thông thái!";
+      resultMsg = "Bạn đang kiểm soát công nghệ rất tốt. Hãy duy trì thói quen tư duy độc lập này nhé.";
+      colorClass = "bg-green-100 text-green-800 border-green-200";
+    } else if (score <= 5) {
+      resultTitle = "Cẩn thận nhé!";
+      resultMsg = "Bạn đang bắt đầu dựa dẫm vào AI. Hãy cố gắng tự làm nhiều hơn trước khi nhờ đến sự trợ giúp.";
+      colorClass = "bg-yellow-100 text-yellow-800 border-yellow-200";
+    } else {
+      resultTitle = "Cảnh báo: Lệ thuộc cao!";
+      resultMsg = "Có vẻ bạn đang để AI làm thay việc của não bộ. Hãy cai nghiện dần bằng cách tự viết dàn ý trước khi mở máy tính.";
+      colorClass = "bg-red-100 text-red-800 border-red-200";
+    }
+
+    return (
+      <div className={`p-8 rounded-2xl border text-center animate-fade-in ${colorClass}`}>
+        <h3 className="text-2xl font-bold mb-3">{resultTitle}</h3>
+        <p className="text-lg mb-6">{resultMsg}</p>
+        <button 
+          onClick={resetQuiz}
+          className="inline-flex items-center px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 font-medium"
+        >
+          <RefreshCw size={16} className="mr-2" /> Làm lại
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
+      <div className="mb-6 flex justify-between items-center text-sm text-slate-500 font-medium uppercase tracking-wide">
+        <span>Câu hỏi {currentQ + 1}/{questions.length}</span>
+        <span>Tiến độ: {Math.round(((currentQ) / questions.length) * 100)}%</span>
+      </div>
+      
+      <h3 className="text-xl font-bold text-slate-900 mb-6 min-h-[3.5rem]">
+        {questions[currentQ].text}
+      </h3>
+
+      <div className="space-y-3">
+        {questions[currentQ].options.map((opt, idx) => (
+          <button
+            key={idx}
+            onClick={() => handleAnswer(opt.score)}
+            className="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50 transition-all flex justify-between items-center group"
+          >
+            <span className="text-slate-700 group-hover:text-indigo-700">{opt.text}</span>
+            <ArrowRight size={18} className="text-slate-300 group-hover:text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
