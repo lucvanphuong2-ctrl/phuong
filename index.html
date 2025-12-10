@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { 
   Brain, 
   AlertTriangle, 
@@ -13,12 +13,46 @@ import {
   RefreshCw
 } from 'lucide-react';
 
+// --- Type Definitions ---
+interface NavItem {
+  id: string;
+  label: string;
+}
+
+interface QuestionOption {
+  text: string;
+  score: number;
+}
+
+interface Question {
+  text: string;
+  options: QuestionOption[];
+}
+
+interface FeatureCardProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  color: string;
+}
+
+interface RiskCardProps {
+  title: string;
+  content: string;
+}
+
+interface GuideStepProps {
+  number: string;
+  title: string;
+  text: string;
+}
+
 // Main Application Component
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('home');
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -28,7 +62,7 @@ export default function App() {
   };
 
   // Navigation Items
-  const navItems = [
+  const navItems: NavItem[] = [
     { id: 'benefits', label: 'Lợi Ích' },
     { id: 'risks', label: 'Tác Hại' },
     { id: 'students', label: 'Dành Cho HSSV' },
@@ -259,7 +293,7 @@ export default function App() {
 
 // --- Sub-components ---
 
-function FeatureCard({ icon, title, description, color }) {
+function FeatureCard({ icon, title, description, color }: FeatureCardProps) {
   return (
     <div className={`p-8 rounded-2xl ${color} border border-slate-100 transition-all hover:shadow-lg hover:-translate-y-1`}>
       <div className="bg-white p-3 rounded-xl shadow-sm inline-block mb-4">
@@ -271,7 +305,7 @@ function FeatureCard({ icon, title, description, color }) {
   );
 }
 
-function RiskCard({ title, content }) {
+function RiskCard({ title, content }: RiskCardProps) {
   return (
     <div className="flex gap-4">
       <div className="flex-shrink-0 mt-1">
@@ -285,7 +319,7 @@ function RiskCard({ title, content }) {
   );
 }
 
-function GuideStep({ number, title, text }) {
+function GuideStep({ number, title, text }: GuideStepProps) {
   return (
     <div className="bg-indigo-800/50 p-6 rounded-xl border border-indigo-700/50 hover:bg-indigo-800 transition-colors">
       <span className="text-4xl font-black text-indigo-500/30 mb-4 block">{number}</span>
@@ -296,11 +330,11 @@ function GuideStep({ number, title, text }) {
 }
 
 function SimpleQuiz() {
-  const [score, setScore] = useState(0);
-  const [currentQ, setCurrentQ] = useState(0);
-  const [showResult, setShowResult] = useState(false);
+  const [score, setScore] = useState<number>(0);
+  const [currentQ, setCurrentQ] = useState<number>(0);
+  const [showResult, setShowResult] = useState<boolean>(false);
 
-  const questions = [
+  const questions: Question[] = [
     {
       text: "Khi giáo viên giao bài tập về nhà, điều đầu tiên bạn làm là gì?",
       options: [
@@ -326,7 +360,7 @@ function SimpleQuiz() {
     }
   ];
 
-  const handleAnswer = (points) => {
+  const handleAnswer = (points: number) => {
     const newScore = score + points;
     if (currentQ < questions.length - 1) {
       setScore(newScore);
